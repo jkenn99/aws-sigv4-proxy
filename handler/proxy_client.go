@@ -25,6 +25,8 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws/endpoints"
+	"github.com/aws/aws-sdk-go/private/protocol/rest"
+
 	v4 "github.com/aws/aws-sdk-go/aws/signer/v4"
 	log "github.com/sirupsen/logrus"
 )
@@ -65,6 +67,8 @@ func (p *ProxyClient) sign(req *http.Request, service *endpoints.ResolvedEndpoin
 	// https://github.com/aws/aws-sdk-go/blob/main/aws/signer/v4/v4.go#L467-L470
 	if service.SigningName == "s3" {
 		p.Signer.DisableURIPathEscaping = true
+
+		req.URL.RawPath = rest.EscapePath(req.URL.Path, false)
 
 		// Enable URI escaping for subsequent calls.
 		defer func() {

@@ -1,6 +1,6 @@
 module aws-sigv4-proxy
 
-go 1.22.4
+go 1.21.11
 
 require (
 	github.com/aws/aws-sdk-go v1.54.19
